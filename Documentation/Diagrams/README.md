@@ -21,4 +21,4 @@
 
 ### 6 Use-Case диаграмма:
 
-![use-case](./Use-Case/Use-Case.png)
+![use-case](./Use_Case/Use_Case.png)
