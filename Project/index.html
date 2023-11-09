@@ -4,13 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="source/styles/style.css">
     <title>Document</title>
 </head>
 
 <body>
-    <canvas></canvas>
+    <div class="game-field">
+        <div class="health-bar">
+            <div style="position:relative; height: 30px; width: 100%; display: flex; justify-content: flex-end;">
+                <div class="health-bar__health health-bar__health_player"></div>
+                <div id="player-health" class="player-health-cover"></div>
+            </div>
+            <div id="timer" class="health-bar__timer">90</div>
+            <div style="position:relative; height: 30px; width: 100%;">
+                <div class="health-bar__health health-bar__health_enemy"></div>
+                <div id="enemy-health" class="enemy-health-cover"></div>
+            </div>
+        </div>
+        <div id="gameover-label">Tie</div>
+        <canvas></canvas>
+    </div>
+
+    <script src="index.js"></script>
 </body>
 
 </html>
-
-<script src="index.js"></script>
