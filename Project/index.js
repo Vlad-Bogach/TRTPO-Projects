@@ -16,11 +16,48 @@ const shop = new Sprite({position: {x: 600, y: 128}, imageSrc: './source/graphic
 const player = new Fighter({
     position: {x: 0, y: 0}, 
     velocity: {x: 0, y: 10},
-    color: 'red',
     offset: {
         x: 0,
         y: 0
-    }})
+    },
+    imageSrc: 'source/graphics/samuraiMack/Idle.png',
+    scale: 2.5,
+    framesMax: 8,
+    offset: {
+        x: 215,
+        y: 157
+    },
+    sprites: {
+        idle: {
+            imageSrc: 'source/graphics/samuraiMack/Idle.png',
+            framesMax: 8
+        },
+        run: {
+            imageSrc: 'source/graphics/samuraiMack/Run.png',
+            framesMax: 8
+        },
+        jump: {
+            imageSrc: 'source/graphics/samuraiMack/Jump.png',
+            framesMax: 2
+        },
+        fall: {
+            imageSrc: 'source/graphics/samuraiMack/Fall.png',
+            framesMax: 2
+        },
+        attack1: {
+            imageSrc: 'source/graphics/samuraiMack/Attack1.png',
+            framesMax: 6
+        }
+    },
+    attackBox:{
+        offset: {
+            x: 100,
+            y: 50,
+        },
+        width: 160,
+        height: 50
+    }
+})
 
 const enemy = new Fighter({
     position: {x: 400, y: 100},
@@ -29,7 +66,46 @@ const enemy = new Fighter({
     offset: {
         x: -50,
         y: 0
-    }})
+    },
+    imageSrc: 'source/graphics/kenji/Idle.png',
+    scale: 2.5,
+    framesMax: 4,
+    offset: {
+        x: 215,
+        y: 167
+    },
+    sprites: {
+        idle: {
+            imageSrc: 'source/graphics/kenji/Idle.png',
+            framesMax: 4
+        },
+        run: {
+            imageSrc: 'source/graphics/kenji/Run.png',
+            framesMax: 8
+        },
+        jump: {
+            imageSrc: 'source/graphics/kenji/Jump.png',
+            framesMax: 2
+        },
+        fall: {
+            imageSrc: 'source/graphics/kenji/Fall.png',
+            framesMax: 2
+        },
+        attack1: {
+            imageSrc: 'source/graphics/kenji/Attack1.png',
+            framesMax: 4
+        }
+    },
+    attackBox:{
+        offset: {
+            x: -170,
+            y: 50,
+        },
+        width: 170,
+        height: 50
+    }
+
+})
 
 
 const keys = {
@@ -70,22 +146,46 @@ function animate() {
     enemy.velocity.x = 0
 
     //player movement
+    
     if(keys.d.pressed && player.lastKey === 'd'){
+        player.switchSprite('run')
         player.velocity.x = 5
     }else if(keys.a.pressed && player.lastKey === 'a'){
+        player.switchSprite('run')
         player.velocity.x = -5
+    } else {
+        player.switchSprite('idle')
     }
+
+    //jumping
+    if(player.velocity.y < 0){
+        player.switchSprite('jump')
+    } else if(player.velocity.y > 0){
+        player.switchSprite('fall') //falling
+    }
+
+    
 
     //enemy movement
     if(keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight'){
+        enemy.switchSprite('run')
         enemy.velocity.x = 5
     }else if(keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft'){
+        enemy.switchSprite('run')
         enemy.velocity.x = -5
+    } else {
+        enemy.switchSprite('idle')
+    }
+
+    if(enemy.velocity.y < 0){
+        enemy.switchSprite('jump')
+    } else if(enemy.velocity.y > 0){
+        enemy.switchSprite('fall') //falling
     }
 
     //detect for collision
 
-    if(collision({rectangle1: player, rectangle2: enemy}) && player.isAttacking)
+    if(collision({rectangle1: player, rectangle2: enemy}) && player.isAttacking && player.frameCurrent === 4)
     {
         player.isAttacking = false
         enemy.health -= 20
@@ -93,11 +193,19 @@ function animate() {
 
     }
 
-    if(collision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking)
+    if(player.isAttacking && player.frameCurrent === 4){
+        player.isAttacking = false
+    }
+
+    if(collision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking && enemy.frameCurrent === 2)
     {
         enemy.isAttacking = false
         player.health -= 20
         document.querySelector('#player-health').style.width = player.health + '%'
+    }
+
+    if(enemy.isAttacking && enemy.frameCurrent === 2){
+        enemy.isAttacking = false
     }
 
     if(player.health <= 0 || enemy.health <= 0)
