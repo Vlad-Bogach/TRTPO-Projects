@@ -14,7 +14,7 @@ const background = new Sprite({position: {x: 0, y: 0}, imageSrc: './source/graph
 const shop = new Sprite({position: {x: 600, y: 128}, imageSrc: './source/graphics/shop.png', scale: 2.75, framesMax: 6})
 
 const player = new Fighter({
-    position: {x: 0, y: 0}, 
+    position: {x: 150, y: 0}, 
     velocity: {x: 0, y: 10},
     offset: {
         x: 0,
@@ -47,6 +47,14 @@ const player = new Fighter({
         attack1: {
             imageSrc: 'source/graphics/samuraiMack/Attack1.png',
             framesMax: 6
+        },
+        takeHit: {
+            imageSrc: 'source/graphics/samuraiMack/Take Hit - white silhouette.png',
+            framesMax: 4
+        },
+        death: {
+            imageSrc: 'source/graphics/samuraiMack/Death.png',
+            framesMax: 6
         }
     },
     attackBox:{
@@ -60,7 +68,7 @@ const player = new Fighter({
 })
 
 const enemy = new Fighter({
-    position: {x: 400, y: 100},
+    position: {x: 800, y: 100},
     velocity: {x: 0, y: 10},
     color: 'yellow',
     offset: {
@@ -94,6 +102,14 @@ const enemy = new Fighter({
         attack1: {
             imageSrc: 'source/graphics/kenji/Attack1.png',
             framesMax: 4
+        },
+        takeHit: {
+            imageSrc: 'source/graphics/kenji/Take hit.png',
+            framesMax: 3
+        },
+        death: {
+            imageSrc: 'source/graphics/kenji/Death.png',
+            framesMax: 7
         }
     },
     attackBox:{
@@ -139,6 +155,8 @@ function animate() {
 
     background.update()
     shop.update()
+    c.fillStyle = 'rgba(255, 255, 255, 0.15)'
+    c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
     enemy.update()
 
@@ -188,8 +206,11 @@ function animate() {
     if(collision({rectangle1: player, rectangle2: enemy}) && player.isAttacking && player.frameCurrent === 4)
     {
         player.isAttacking = false
-        enemy.health -= 20
-        document.querySelector('#enemy-health').style.width = enemy.health + '%'
+        enemy.takeHit()
+       // document.querySelector('#enemy-health').style.width = enemy.health + '%'
+        gsap.to('#enemy-health', {
+            width: enemy.health + '%'
+        })
 
     }
 
@@ -200,8 +221,11 @@ function animate() {
     if(collision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking && enemy.frameCurrent === 2)
     {
         enemy.isAttacking = false
-        player.health -= 20
-        document.querySelector('#player-health').style.width = player.health + '%'
+        player.takeHit()
+        //document.querySelector('#player-health').style.width = player.health + '%'
+        gsap.to('#player-health', {
+            width: player.health + '%'
+        })
     }
 
     if(enemy.isAttacking && enemy.frameCurrent === 2){
@@ -218,70 +242,82 @@ animate()
 
 window.addEventListener('keydown', (event) => {
     //console.log(event.key)
-    switch(event.key){
-        case 'd':
-            keys.d.pressed = true
-            player.lastKey = 'd'
-            break
-        case 'a':
-            keys.a.pressed = true
-            player.lastKey = 'a'
-            break
-        case 'w':
-            keys.w.pressed = true
-            if(player.position.y + player.height + 20 + 96>= canvas.height){
-                player.velocity.y = -20
-            }
-            break
-        case ' ':
-            player.attack()
-            break
+    if(!player.dead){
 
-        //enemy keys
-        case 'ArrowRight':
-            keys.ArrowRight.pressed = true
-            enemy.lastKey = 'ArrowRight'
-            break
-        case 'ArrowLeft':
-            keys.ArrowLeft.pressed = true
-            enemy.lastKey = 'ArrowLeft'
-            break
-        case 'ArrowUp':
-            keys.w.pressed = true
-            if(enemy.position.y + enemy.height + 20 + 96>= canvas.height){
-                enemy.velocity.y = -20
-            }
-            break
-        case '+':
-            enemy.attack()
-            break
+        switch(event.key){
+            case 'd':
+                keys.d.pressed = true
+                player.lastKey = 'd'
+                break
+            case 'a':
+                keys.a.pressed = true
+                player.lastKey = 'a'
+                break
+            case 'w':
+                keys.w.pressed = true
+                if(player.position.y + player.height + 20 + 96>= canvas.height){
+                    player.velocity.y = -20
+                }
+                break
+            case ' ':
+                player.attack()
+                break
+
+            
+        }
     }
+
+    //enemy keys
+    if(!enemy.dead){
+
+        switch(event.key){
+            case 'ArrowRight':
+                keys.ArrowRight.pressed = true
+                enemy.lastKey = 'ArrowRight'
+                break
+            case 'ArrowLeft':
+                keys.ArrowLeft.pressed = true
+                enemy.lastKey = 'ArrowLeft'
+                break
+            case 'ArrowUp':
+                keys.w.pressed = true
+                if(enemy.position.y + enemy.height + 20 + 96>= canvas.height){
+                    enemy.velocity.y = -20
+                }
+                break
+            case '+':
+                enemy.attack()
+                break
+        }
+    }
+   
     
 
 })
 
 window.addEventListener('keyup', (event) => {
     //console.log(event.key)
-    switch(event.key){
-        case 'd':
-            keys.d.pressed = false
-            break
-        case 'a':
-            keys.a.pressed = false
-            break
-        case 'w':
-            keys.w.pressed = false
-            break
+    
+        switch(event.key){
+            case 'd':
+                keys.d.pressed = false
+                break
+            case 'a':
+                keys.a.pressed = false
+                break
+            case 'w':
+                keys.w.pressed = false
+                break
 
-        case 'ArrowRight':
-            keys.ArrowRight.pressed = false
-            break
-        case 'ArrowLeft':
-            keys.ArrowLeft.pressed = false
-            break
-        case 'ArrowUp':
-            keys.w.pressed = false
-            break
-    }
+            case 'ArrowRight':
+                keys.ArrowRight.pressed = false
+                break
+            case 'ArrowLeft':
+                keys.ArrowLeft.pressed = false
+                break
+            case 'ArrowUp':
+                keys.w.pressed = false
+                break
+        }
 })
 

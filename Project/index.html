@@ -11,12 +11,14 @@
 <body>
     <div class="game-field">
         <div class="health-bar">
-            <div style="position:relative; height: 30px; width: 100%; display: flex; justify-content: flex-end;">
+            <div
+                style="position:relative; width: 100%; display: flex; justify-content: flex-end; border-top: 4px solid white; border-left: 4px solid white; border-bottom: 4px solid white">
                 <div class="health-bar__health health-bar__health_player"></div>
                 <div id="player-health" class="player-health-cover"></div>
             </div>
             <div id="timer" class="health-bar__timer">90</div>
-            <div style="position:relative; height: 30px; width: 100%;">
+            <div
+                style="position:relative; width: 100%; border-right: 4px solid white; border-bottom: 4px solid white; border-top: 4px solid white">
                 <div class="health-bar__health health-bar__health_enemy"></div>
                 <div id="enemy-health" class="enemy-health-cover"></div>
             </div>
@@ -25,6 +27,9 @@
         <canvas></canvas>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+        integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="source/scripts/functions.js"></script>
     <script src="source/scripts/classes.js"></script>
     <script src="index.js"></script>

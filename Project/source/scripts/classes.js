@@ -59,19 +59,21 @@ class Fighter extends Sprite {
         this.framesElapsed = 0
         this.framesHold = 5
         this.sprites = sprites
+        this.dead = false
 
         for(const sprite in this.sprites){
             sprites[sprite].image = new Image()
             sprites[sprite].image.src = sprites[sprite].imageSrc
         }
-        console.log(this.sprites)
+        //console.log(this.sprites)
        // console.log('construct')
     }
 
 
     update() {
         this.draw()
-        this.animateFrames()
+        if(!this.dead) this.animateFrames()
+            
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
@@ -93,8 +95,29 @@ class Fighter extends Sprite {
         this.isAttacking = true
     }
 
+    takeHit(){
+        
+        this.health -= 20
+        if(this.health <= 0){
+            this.switchSprite('death')
+        } else {
+            this.switchSprite('takeHit')
+        }
+    }
+
     switchSprite(sprite){
+        if(this.image === this.sprites.death.image){
+            if(this.frameCurrent === this.sprites.death.framesMax - 1) 
+            {
+                this.dead = true
+                //console.log('dead')
+            }
+            return
+        } 
+
         if(this.image === this.sprites.attack1.image && this.frameCurrent < this.sprites.attack1.framesMax - 1) return
+        if(this.image === this.sprites.takeHit.image && this.frameCurrent < this.sprites.takeHit.framesMax - 1) return
+
         switch(sprite){
             case 'idle':
                 if(this.image !== this.sprites.idle.image)
@@ -104,6 +127,7 @@ class Fighter extends Sprite {
                     this.frameCurrent = 0
                 }
              break
+
             case 'run':
                 if(this.image !== this.sprites.run.image){
                     this.framesMax = this.sprites.run.framesMax
@@ -111,6 +135,7 @@ class Fighter extends Sprite {
                     this.frameCurrent = 0
                 }
              break
+
             case 'jump':
                 if(this.image !== this.sprites.jump.image){
                     this.image = this.sprites.jump.image
@@ -118,6 +143,7 @@ class Fighter extends Sprite {
                     this.frameCurrent = 0
                 }
              break
+
             case 'fall':
             if(this.image !== this.sprites.fall.image){
                 this.image = this.sprites.fall.image
@@ -125,6 +151,7 @@ class Fighter extends Sprite {
                 this.frameCurrent = 0
             }
             break
+
             case 'attack1':
                 if(this.image !== this.sprites.attack1.image){
                     this.image = this.sprites.attack1.image
@@ -132,7 +159,22 @@ class Fighter extends Sprite {
                     this.frameCurrent = 0
                 }
              break
-            
+
+            case 'takeHit':
+            if(this.image !== this.sprites.takeHit.image){
+                this.image = this.sprites.takeHit.image
+                this.framesMax = this.sprites.takeHit.framesMax
+                this.frameCurrent = 0
+            }
+            break
+
+            case 'death':
+            if(this.image !== this.sprites.death.image){
+                this.image = this.sprites.death.image
+                this.framesMax = this.sprites.death.framesMax
+                this.frameCurrent = 0
+            }
+            break
         }
 
     }

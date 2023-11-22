@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 *{
     box-sizing: border-box;
+    font-family: 'Press Start 2P', sans-serif;
 }
 
 .health-bar__health{
-    background-color: yellow;
-
+    background-color: red;
+    
 }
 
 .game-field {
@@ -18,21 +21,25 @@
     width: 100%;
     align-items: center;
     padding: 20px;
+    
 }
 
 .health-bar__timer{
-    background-color: red;
+    background-color: black;
     width: 100px;
-    height: 100px;
+    height: 50px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: white;
+    border: 4px solid white;
+    
 }
 
 .enemy-health-cover{
     position: absolute;
-    background: blue;
+    background: #818CF8;
     top: 0;
     right: 0;
     left: 0;
@@ -41,7 +48,7 @@
 
 .player-health-cover{
     position: absolute;
-    background: blue;
+    background: #818CF8;
     top: 0;
     right: 0;
     bottom: 0;
