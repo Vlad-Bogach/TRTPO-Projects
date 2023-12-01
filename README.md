@@ -316,7 +316,7 @@ Mortal Kombat (MK) — серия видеоигр в жанре файтинг,
 
 <a name="testing_src" />
 
-## 7.4 Исходный код тестов
+## 4.4 Исходный код тестов
 
 [Исходный код тестов](https://github.com/operupalnamochenny/TRTPO-Projects/tree/main/Project/source/tests)
 
