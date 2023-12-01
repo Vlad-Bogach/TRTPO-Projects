@@ -3,8 +3,8 @@ class Sprite {
         this.position = position 
         this.height = 150
         this.width = 50
-        this.image = new Image()
-        this.image.src = imageSrc
+        // this.image = new Image()
+        // this.image.src = imageSrc
         this.scale = scale
         this.framesMax = framesMax
         this.frameCurrent = 0
@@ -62,8 +62,8 @@ class Fighter extends Sprite {
         this.dead = false
 
         for(const sprite in this.sprites){
-            sprites[sprite].image = new Image()
-            sprites[sprite].image.src = sprites[sprite].imageSrc
+            // sprites[sprite].image = new Image()
+            // sprites[sprite].image.src = sprites[sprite].imageSrc
         }
         //console.log(this.sprites)
        // console.log('construct')
@@ -88,6 +88,12 @@ class Fighter extends Sprite {
         else this.velocity.y += GRAVITY
         //console.log('upda')
         //console.log(this.position.y)
+    }
+
+    checkWinner(enemy){
+        if(!this.dead && !enemy.dead) return "tie"
+        if(!this.dead && enemy.dead) return "player"
+        if(this.dead && !player.dead) return "enemy"
     }
 
     attack(){
@@ -179,3 +185,5 @@ class Fighter extends Sprite {
 
     }
 }
+
+module.exports = {Fighter}

@@ -10,15 +10,20 @@ let timerId
 
 function determineWinner({player, enemy, timerId}){
     clearTimeout(timerId)
-    document.querySelector('#gameover-label').style.display = 'flex'
+    // document.querySelector('#gameover-label').style.display = 'flex'
     if(player.health === enemy.health){
-        document.querySelector('#gameover-label').innerHTML = 'Tie'
+        // document.querySelector('#gameover-label').innerHTML = 'Tie'
+        return "tie"
     } else if (player.health > enemy.health){
-        document.querySelector('#gameover-label').innerHTML = 'Player win'
+        // document.querySelector('#gameover-label').innerHTML = 'Player win'
+        return "player"
     } else if (player.health < enemy.health){
-        document.querySelector('#gameover-label').innerHTML = 'Enemy win'
+        // document.querySelector('#gameover-label').innerHTML = 'Enemy win'
+        return "enemy"
     } 
 }
+
+
 
 function decreaseTimer(){
     
@@ -33,3 +38,5 @@ function decreaseTimer(){
         determineWinner({player, enemy, timerId})
     }
 }
+
+module.exports = {determineWinner}
